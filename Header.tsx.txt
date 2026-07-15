@@ -1,0 +1,210 @@
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Truck, Phone, Mail, MapPin, Menu, X, ArrowRight } from 'lucide-react';
+
+interface HeaderProps {
+  onNavigate: (sectionId: string) => void;
+}
+
+export default function Header({ onNavigate }: HeaderProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  const navItems = [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About Us' },
+    { id: 'services', label: 'Services' },
+    { id: 'pricing', label: 'Pricing' },
+    { id: 'gallery', label: 'Gallery' },
+    { id: 'testimonials', label: 'Testimonials' },
+    { id: 'faq', label: 'FAQ' },
+    { id: 'contact', label: 'Contact' },
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+
+      // Simple active section highlights based on viewport
+      const scrollPosition = window.scrollY + 120;
+      for (const item of navItems) {
+        const el = document.getElementById(item.id);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(item.id);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleNavClick = (id: string) => {
+    onNavigate(id);
+    setIsMobileMenuOpen(false);
+    setActiveSection(id);
+  };
+
+  return (
+    <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+      {/* Top bar */}
+      <div className="bg-blue-950 text-white text-xs py-2 px-4 sm:px-6 lg:px-8 border-b border-blue-900/50 hidden md:block">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center space-x-6">
+            <a href="tel:03122800519" className="flex items-center gap-1.5 hover:text-orange-400 transition-colors">
+              <Phone className="w-3.5 h-3.5 text-orange-500" />
+              <span>+92 312 2800519</span>
+            </a>
+            <a href="mailto:zohanmovers@gmail.com" className="flex items-center gap-1.5 hover:text-orange-400 transition-colors">
+              <Mail className="w-3.5 h-3.5 text-orange-500" />
+              <span>zohanmovers@gmail.com</span>
+            </a>
+            <div className="flex items-center gap-1.5 text-slate-300">
+              <MapPin className="w-3.5 h-3.5 text-orange-500" />
+              <span>Jinnah Highway, Karachi, Pakistan</span>
+            </div>
+          </div>
+          <div className="flex items-center space-x-4">
+            <span className="text-slate-300">24/7 Professional Relocation Services</span>
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main navigation */}
+      <div
+        className="w-full py-3 md:py-4 px-4 sm:px-6 lg:px-8 bg-white/90 backdrop-blur-md text-slate-800 border-b border-slate-200 sticky top-0 z-50 shadow-sm"
+      >
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          {/* Logo */}
+          <button
+            onClick={() => handleNavClick('home')}
+            className="flex items-center gap-2 text-left group focus:outline-none"
+            id="logo-button"
+          >
+            <div className="p-2 bg-blue-800 text-white rounded-lg group-hover:scale-105 transition-transform">
+              <Truck className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <span className="block font-black text-xl tracking-tighter leading-none text-blue-900">
+                ZOHAN
+              </span>
+              <span className="text-[10px] font-bold tracking-[0.2em] text-orange-500 block uppercase -mt-0.5">
+                Movers & Packers
+              </span>
+            </div>
+          </button>
+
+          {/* Desktop Links */}
+          <nav className="hidden lg:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`font-semibold text-sm transition-all relative py-1 focus:outline-none cursor-pointer ${
+                  activeSection === item.id
+                    ? 'text-orange-500 font-bold'
+                    : 'text-slate-600 hover:text-blue-900'
+                }`}
+              >
+                {item.label}
+                {activeSection === item.id && (
+                  <motion.div
+                    layoutId="activeIndicator"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-orange-500 rounded-full"
+                  />
+                )}
+              </button>
+            ))}
+          </nav>
+
+          {/* Desktop CTA */}
+          <div className="hidden lg:flex items-center space-x-4">
+            <button
+              onClick={() => handleNavClick('pricing')}
+              className="bg-orange-500 hover:bg-orange-600 active:scale-95 text-white px-5 py-2 rounded-full text-sm font-bold shadow-lg shadow-orange-200 transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <span>Get Free Quote</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors focus:outline-none cursor-pointer text-blue-950"
+            aria-label="Toggle navigation menu"
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full bg-blue-950 text-white lg:hidden border-t border-blue-900 overflow-hidden shadow-2xl"
+          >
+            <div className="px-4 py-6 space-y-4 max-w-7xl mx-auto">
+              <div className="grid grid-cols-2 gap-2 pb-4 border-b border-blue-900">
+                <a
+                  href="tel:03122800519"
+                  className="flex flex-col items-center justify-center p-3 bg-blue-900/40 rounded-xl hover:bg-blue-900/60 transition-colors text-center"
+                >
+                  <Phone className="w-5 h-5 text-orange-500 mb-1" />
+                  <span className="text-[10px] text-slate-300">Call Support</span>
+                  <span className="text-xs font-bold">+92 312 2800519</span>
+                </a>
+                <a
+                  href="https://wa.me/923122800519"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center justify-center p-3 bg-emerald-950/40 rounded-xl hover:bg-emerald-950/60 transition-colors text-center border border-emerald-900/30"
+                >
+                  <svg className="w-5 h-5 text-emerald-400 mb-1 fill-current" viewBox="0 0 24 24">
+                    <path d="M12.031 6.172c-2.002 0-3.882.977-5.031 2.613-.679.967-1.031 2.115-1.031 3.298 0 1.228.384 2.417 1.11 3.411L6 20l4.639-1.218c.95.518 2.016.792 3.102.792 3.528 0 6.399-2.871 6.399-6.399 0-3.527-2.871-6.403-6.11-6.403h.001zm0 11.666a5.21 5.21 0 0 1-2.658-.726l-.19-.111-2.736.718.73-2.666-.123-.196a5.216 5.216 0 0 1-.803-2.796c0-2.884 2.348-5.232 5.232-5.232 2.885 0 5.233 2.348 5.233 5.232.001 2.884-2.348 5.233-5.233 5.233h-.002z"/>
+                  </svg>
+                  <span className="text-[10px] text-slate-300">WhatsApp Chat</span>
+                  <span className="text-xs font-bold">0312 2800519</span>
+                </a>
+              </div>
+              <div className="flex flex-col space-y-1">
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`py-2.5 px-3 rounded-lg text-left text-base font-semibold transition-colors w-full focus:outline-none flex items-center justify-between ${
+                      activeSection === item.id ? 'bg-orange-500 text-white font-bold' : 'hover:bg-blue-900/50 text-slate-200'
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    <span className="text-xs opacity-50">→</span>
+                  </button>
+                ))}
+              </div>
+              <div className="pt-2">
+                <button
+                  onClick={() => handleNavClick('pricing')}
+                  className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-center font-bold text-sm rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <span>Request Shifting Quote</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+}

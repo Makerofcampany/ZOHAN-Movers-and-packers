@@ -1,0 +1,248 @@
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import Header from './components/Header';
+import Hero from './components/Hero';
+import About from './components/About';
+import Services from './components/Services';
+import PricingCalculator from './components/PricingCalculator';
+import Gallery from './components/Gallery';
+import Testimonials from './components/Testimonials';
+import FAQ from './components/FAQ';
+import Contact from './components/Contact';
+import Footer from './components/Footer';
+import { QuoteRequest } from './types';
+import { ClipboardList, X, Check, Truck, Calendar, Phone, ShieldCheck } from 'lucide-react';
+
+export default function App() {
+  const [selectedServiceForQuote, setSelectedServiceForQuote] = useState<string>('');
+  const [submittedQuotes, setSubmittedQuotes] = useState<QuoteRequest[]>([]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [notification, setNotification] = useState<string | null>(null);
+
+  // Load quotes from localStorage on init
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('zohan_movers_quotes');
+      if (stored) {
+        setSubmittedQuotes(JSON.parse(stored));
+      }
+    } catch (e) {
+      console.error('Failed to load quotes from localStorage', e);
+    }
+  }, []);
+
+  const handleNavigate = (sectionId: string) => {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      // Offset for sticky navigation bar
+      const offset = 80;
+      const elementPosition = el.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const handleSelectService = (serviceTitle: string) => {
+    setSelectedServiceForQuote(serviceTitle);
+    handleNavigate('pricing');
+  };
+
+  const handleQuoteSubmitted = (newQuote: QuoteRequest) => {
+    const updated = [newQuote, ...submittedQuotes];
+    setSubmittedQuotes(updated);
+    try {
+      localStorage.setItem('zohan_movers_quotes', JSON.stringify(updated));
+    } catch (e) {
+      console.error(e);
+    }
+
+    // Trigger sweet feedback notification
+    setNotification(`Quote requested successfully: Ref ${newQuote.id}`);
+    setTimeout(() => setNotification(null), 6000);
+  };
+
+  const handleInquirySubmitted = (inquiry: { name: string; phone: string; message: string; date: string }) => {
+    // We can save inquiries as simple records or notify the user
+    setNotification(`Message sent successfully! We will call you shortly.`);
+    setTimeout(() => setNotification(null), 5000);
+  };
+
+  const clearQuotes = () => {
+    setSubmittedQuotes([]);
+    localStorage.removeItem('zohan_movers_quotes');
+    setIsDrawerOpen(false);
+  };
+
+  return (
+    <div className="relative min-h-screen bg-slate-50 text-slate-800">
+      {/* Dynamic Floating Toast Notification */}
+      <AnimatePresence>
+        {notification && (
+          <motion.div
+            initial={{ opacity: 0, y: -50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50, scale: 0.9 }}
+            className="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-emerald-600 text-white font-bold py-3.5 px-6 rounded-2xl shadow-2xl flex items-center gap-2.5 border border-emerald-500 max-w-sm w-[90%]"
+          >
+            <span className="p-1 bg-white/20 rounded-full">
+              <Check className="w-4 h-4 text-white" />
+            </span>
+            <span className="text-xs sm:text-sm text-left">{notification}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Sticky Navigation */}
+      <Header onNavigate={handleNavigate} />
+
+      {/* Main Sections */}
+      <main>
+        <Hero onGetQuoteClick={() => handleNavigate('pricing')} />
+        <About />
+        <Services onSelectServiceForQuote={handleSelectService} />
+        <PricingCalculator
+          initialServiceType={selectedServiceForQuote}
+          onQuoteSubmitted={handleQuoteSubmitted}
+        />
+        <Gallery />
+        <Testimonials />
+        <FAQ />
+        <Contact onInquirySubmitted={handleInquirySubmitted} />
+      </main>
+
+      {/* Footer */}
+      <Footer onNavigate={handleNavigate} />
+
+      {/* Floating My Bookings Badge (Visible if user submitted quotes) */}
+      {submittedQuotes.length > 0 && (
+        <div className="fixed bottom-6 right-6 z-40">
+          <motion.button
+            initial={{ scale: 0, rotate: -10 }}
+            animate={{ scale: 1, rotate: 0 }}
+            whileHover={{ scale: 1.05 }}
+            onClick={() => setIsDrawerOpen(true)}
+            className="p-4 bg-blue-950 hover:bg-blue-900 text-white rounded-2xl shadow-2xl border border-blue-900 flex items-center gap-2 cursor-pointer group"
+          >
+            <div className="relative">
+              <ClipboardList className="w-6 h-6 text-orange-500" />
+              <span className="absolute -top-2.5 -right-2.5 bg-orange-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-blue-950">
+                {submittedQuotes.length}
+              </span>
+            </div>
+            <span className="text-xs font-bold hidden md:inline">Track My Quotes</span>
+          </motion.button>
+        </div>
+      )}
+
+      {/* Drawer Overlay for tracking Shifting Quotes */}
+      <AnimatePresence>
+        {isDrawerOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsDrawerOpen(false)}
+              className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40"
+            />
+
+            {/* Slide-over Drawer panel */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col justify-between border-l border-slate-100"
+            >
+              <div>
+                {/* Header */}
+                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-blue-950 text-white">
+                  <div className="flex items-center gap-2">
+                    <ClipboardList className="w-5 h-5 text-orange-500" />
+                    <div>
+                      <h3 className="font-bold text-base font-display text-white">Track Relocation Quotes</h3>
+                      <p className="text-[10px] text-slate-300">My submitted shifting requests</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setIsDrawerOpen(false)}
+                    className="p-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-white transition-colors cursor-pointer"
+                    aria-label="Close drawer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Body - Quote list */}
+                <div className="p-6 overflow-y-auto max-h-[70vh] space-y-4">
+                  {submittedQuotes.map((q) => (
+                    <div
+                      key={q.id}
+                      className="border border-slate-200/80 rounded-2xl p-4 text-left space-y-3 bg-slate-50 relative"
+                    >
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <span className="text-xs font-bold text-blue-950 block">{q.serviceType}</span>
+                          <span className="text-[10px] font-mono text-orange-500">{q.id}</span>
+                        </div>
+                        <span className="px-2 py-0.5 bg-amber-50 text-amber-600 border border-amber-200 rounded-md text-[9px] font-bold uppercase tracking-wider">
+                          Pending survey
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-600 border-t border-slate-200/50 pt-2.5">
+                        <div className="flex items-center gap-1">
+                          <Truck className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                          <span className="truncate">{q.originCity} → {q.destinationCity}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                          <span>{q.movingDate}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center bg-blue-50/50 border border-blue-100/40 rounded-xl p-2.5 mt-2">
+                        <span className="text-[10px] font-semibold text-slate-500">Est. Price:</span>
+                        <span className="text-xs font-black text-blue-900">
+                          PKR {q.estimatedPrice ? q.estimatedPrice.toLocaleString('en-US') : 'Calculating'}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="p-6 border-t border-slate-100 bg-slate-50 space-y-3 text-left">
+                <div className="flex items-start gap-2 bg-emerald-50 border border-emerald-100 text-emerald-800 p-3.5 rounded-xl text-[11px] leading-relaxed">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <span>A Zohan Movers supervisor will contact you at your provided phone number to finalize schedules.</span>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={clearQuotes}
+                    className="flex-1 py-3 bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 text-xs font-bold rounded-xl cursor-pointer"
+                  >
+                    Clear History
+                  </button>
+                  <a
+                    href="tel:03122800519"
+                    className="flex-1 py-3 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-xl text-center shadow shadow-orange-500/10 flex items-center justify-center gap-1"
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>Call Support</span>
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

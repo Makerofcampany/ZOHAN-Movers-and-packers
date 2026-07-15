@@ -1,0 +1,232 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Facebook, Instagram, Mail, Phone, MapPin, Truck, Shield, FileText, X } from 'lucide-react';
+
+interface FooterProps {
+  onNavigate: (sectionId: string) => void;
+}
+
+export default function Footer({ onNavigate }: FooterProps) {
+  const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | null>(null);
+
+  const currentYear = 2026;
+
+  return (
+    <footer className="bg-blue-950 text-slate-300 pt-16 pb-8 border-t border-blue-900 text-left">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12">
+          
+          {/* Column 1: Brand */}
+          <div className="lg:col-span-4 space-y-4">
+            <button
+              onClick={() => onNavigate('home')}
+              className="flex items-center gap-2 text-left group focus:outline-none"
+            >
+              <div className="p-1.5 bg-orange-500 text-white rounded-lg">
+                <Truck className="w-5 h-5" />
+              </div>
+              <div>
+                <span className="block font-black text-lg tracking-tight leading-none text-white">
+                  ZOHAN
+                </span>
+                <span className="text-[9px] font-bold tracking-widest text-orange-500 block uppercase">
+                  Movers & Packers
+                </span>
+              </div>
+            </button>
+            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+              Pakistan's trusted shifting company, delivering excellence in packing and secure domestic relocation services across Karachi, Lahore, Islamabad, and all major cities.
+            </p>
+            {/* Social Icons */}
+            <div className="flex items-center space-x-3 pt-2">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-blue-900/50 hover:bg-orange-500 hover:text-white transition-all flex items-center justify-center text-slate-300"
+                aria-label="Facebook Link"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-blue-900/50 hover:bg-orange-500 hover:text-white transition-all flex items-center justify-center text-slate-300"
+                aria-label="Instagram Link"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a
+                href="https://tiktok.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-blue-900/50 hover:bg-orange-500 hover:text-white transition-all flex items-center justify-center text-slate-300 font-extrabold text-xs"
+                aria-label="TikTok Link"
+              >
+                {/* Fallback text icon for TikTok to ensure cross-platform safety */}
+                <span className="font-sans font-black tracking-tighter">🎵</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Column 2: Quick Links */}
+          <div className="lg:col-span-2 space-y-4">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Quick Links</h4>
+            <ul className="space-y-2 text-xs">
+              {['home', 'about', 'services', 'pricing'].map((id) => (
+                <li key={id}>
+                  <button
+                    onClick={() => onNavigate(id)}
+                    className="hover:text-orange-400 hover:underline transition-all capitalize"
+                  >
+                    {id === 'about' ? 'About Us' : id}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3: Secondary links */}
+          <div className="lg:col-span-2 space-y-4">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Help & Gallery</h4>
+            <ul className="space-y-2 text-xs">
+              {['gallery', 'testimonials', 'faq', 'contact'].map((id) => (
+                <li key={id}>
+                  <button
+                    onClick={() => onNavigate(id)}
+                    className="hover:text-orange-400 hover:underline transition-all capitalize"
+                  >
+                    {id}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 4: Location/Contact */}
+          <div className="lg:col-span-4 space-y-4 text-xs">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Our Office</h4>
+            <div className="space-y-3">
+              <div className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
+                <span>Jinnah Highway, Karachi, Pakistan</span>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <Phone className="w-4 h-4 text-orange-500 shrink-0" />
+                <a href="tel:03122800519" className="hover:text-white hover:underline transition-colors">
+                  +92 312 2800519
+                </a>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <Mail className="w-4 h-4 text-orange-500 shrink-0" />
+                <a href="mailto:zohanmovers@gmail.com" className="hover:text-white hover:underline transition-colors">
+                  zohanmovers@gmail.com
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-blue-900/60 my-8"></div>
+
+        {/* Bottom copyright and legal */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <div>
+            Copyright © {currentYear} <strong>ZOHAN Movers & Packers</strong>. All Rights Reserved.
+          </div>
+          <div className="flex items-center space-x-6">
+            <button
+              onClick={() => setLegalModal('privacy')}
+              className="hover:text-white transition-all hover:underline"
+            >
+              Privacy Policy
+            </button>
+            <button
+              onClick={() => setLegalModal('terms')}
+              className="hover:text-white transition-all hover:underline"
+            >
+              Terms & Conditions
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Legal terms overlays */}
+      <AnimatePresence>
+        {legalModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-3xl p-6 md:p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto text-slate-700 relative border border-slate-200"
+            >
+              {/* Close button */}
+              <button
+                onClick={() => setLegalModal(null)}
+                className="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-full cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {legalModal === 'privacy' ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 text-blue-950 font-black text-xl mb-2 font-display">
+                    <Shield className="w-5 h-5 text-orange-500" />
+                    <span>Privacy Policy - Zohan Movers</span>
+                  </div>
+                  <p className="text-xs text-slate-500">Effective Date: July 15, 2026</p>
+                  <p className="text-sm leading-relaxed">
+                    At ZOHAN Movers & Packers, we hold your personal privacy in high regard. This policy details how we handle the contact details you enter during our quote estimation process.
+                  </p>
+                  <h5 className="font-bold text-sm text-blue-950 mt-4">1. Information We Collect</h5>
+                  <p className="text-xs leading-relaxed text-slate-600">
+                    We collect your Name, Phone Number, Email, and shifting list parameters solely to estimate the volumetric load and coordinate physical surveys. We do not sell or lease this information.
+                  </p>
+                  <h5 className="font-bold text-sm text-blue-950 mt-4">2. Communications</h5>
+                  <p className="text-xs leading-relaxed text-slate-600">
+                    By submitting a shifting inquiry, you consent to receive direct telephone verification, SMS confirmation, or WhatsApp scheduling logs from our designated supervisors.
+                  </p>
+                  <h5 className="font-bold text-sm text-blue-950 mt-4">3. Data Integrity</h5>
+                  <p className="text-xs leading-relaxed text-slate-600">
+                    Your parameters are cached locally on your device storage to track request statuses. Our internal team stores them strictly in protected channels.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 text-blue-950 font-black text-xl mb-2 font-display">
+                    <FileText className="w-5 h-5 text-orange-500" />
+                    <span>Terms & Conditions - Zohan Movers</span>
+                  </div>
+                  <p className="text-xs text-slate-500">Effective Date: July 15, 2026</p>
+                  <p className="text-sm leading-relaxed">
+                    By booking services with ZOHAN Movers & Packers, you agree to comply with the following logistical parameters:
+                  </p>
+                  <h5 className="font-bold text-sm text-blue-950 mt-4">1. Survey & Pricing Accuracy</h5>
+                  <p className="text-xs leading-relaxed text-slate-600">
+                    Our digital calculator provides a realistic estimate. However, if the physical inventory at the time of shifting exceeds the declared volume, Zohan Movers reserves the right to adjust truck sizes and labor rates proportionally.
+                  </p>
+                  <h5 className="font-bold text-sm text-blue-950 mt-4">2. Valuables & Jewelry</h5>
+                  <p className="text-xs leading-relaxed text-slate-600">
+                    Clients are strictly required to personally carry high-value small jewelry, laptops, cash, and luxury wristwatches. Zohan Movers will not take responsibility for losses of cash or jewelry.
+                  </p>
+                  <h5 className="font-bold text-sm text-blue-950 mt-4">3. Damage Claims</h5>
+                  <p className="text-xs leading-relaxed text-slate-600">
+                    If fragile items wrapped by our team suffer damage, we will inspect the package immediately upon unpacking and offer fair compensation. Claims made after the shifting team has left the site are not eligible.
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+    </footer>
+  );
+}

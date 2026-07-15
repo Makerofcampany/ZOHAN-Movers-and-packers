@@ -1,0 +1,149 @@
+import { motion } from 'motion/react';
+import { PhoneCall, Users, Coins, Clock, ShieldCheck, Award, MapPin } from 'lucide-react';
+import { WHY_CHOOSE_US, CITIES } from '../data';
+
+export default function About() {
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'PhoneCall': return <PhoneCall className="w-6 h-6 text-orange-500" />;
+      case 'Users': return <Users className="w-6 h-6 text-orange-500" />;
+      case 'Coins': return <Coins className="w-6 h-6 text-orange-500" />;
+      case 'Clock': return <Clock className="w-6 h-6 text-orange-500" />;
+      case 'ShieldCheck': return <ShieldCheck className="w-6 h-6 text-orange-500" />;
+      case 'Award': return <Award className="w-6 h-6 text-orange-500" />;
+      default: return <ShieldCheck className="w-6 h-6 text-orange-500" />;
+    }
+  };
+
+  return (
+    <section id="about" className="py-20 md:py-28 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* About Section Header & Split Intro */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-20">
+          
+          {/* Left: Professional image layout */}
+          <div className="lg:col-span-5 relative">
+            <div className="relative">
+              {/* Decorative behind card */}
+              <div className="absolute -top-4 -left-4 w-full h-full bg-orange-500/10 rounded-2xl border-2 border-orange-500/20 z-0"></div>
+              
+              <img
+                src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=800"
+                alt="Movers and packers at work"
+                className="rounded-2xl shadow-xl w-full object-cover aspect-4/3 relative z-10 border border-slate-100"
+              />
+
+              {/* Float Experience Badge */}
+              <div className="absolute -bottom-6 -right-6 bg-blue-900 text-white p-5 rounded-2xl shadow-xl z-20 border border-blue-800 text-center min-w-40">
+                <div className="text-3xl font-extrabold text-orange-500 leading-none">10+</div>
+                <div className="text-[10px] font-bold text-slate-300 uppercase tracking-widest mt-1">Years Experience</div>
+                <div className="text-xs font-semibold text-white mt-1">In Pakistani Logistics</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Text contents */}
+          <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="text-orange-500 font-extrabold text-xs uppercase tracking-widest flex items-center gap-2">
+              <span className="w-8 h-0.5 bg-orange-500"></span>
+              <span>About Zohan Movers</span>
+            </div>
+            
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-blue-950 font-display leading-tight">
+              Your Professional Relocation Partners in Pakistan
+            </h2>
+
+            <p className="text-slate-600 text-base leading-relaxed">
+              ZOHAN Movers & Packers is a trusted moving company providing safe, fast, and affordable relocation services across Pakistan. We specialize in house shifting, office relocation, furniture moving, packing, unpacking, and secure transportation with professional staff.
+            </p>
+
+            <p className="text-slate-600 text-base leading-relaxed">
+              We understand that relocation is more than just moving boxes—it is about moving lives. That is why our crew is carefully trained, polite, and fully equipped with heavy-duty tools to protect your furniture from scratches, dents, and weathering.
+            </p>
+
+            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-900 font-bold shrink-0">
+                  ✓
+                </div>
+                <div>
+                  <h4 className="font-bold text-blue-950 text-sm">Affordable Rates</h4>
+                  <p className="text-xs text-slate-500">No hidden shifting tolls</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-900 font-bold shrink-0">
+                  ✓
+                </div>
+                <div>
+                  <h4 className="font-bold text-blue-950 text-sm">Insured Cargo</h4>
+                  <p className="text-xs text-slate-500">100% transit guarantee</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Why Choose Us Grid */}
+        <div className="bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-100/80 mb-20">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="text-orange-500 font-extrabold text-xs uppercase tracking-widest mb-2">
+              Why Choose Zohan?
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-blue-950 font-display">
+              Uncompromising Safety. Unbeatable Standards.
+            </h3>
+            <p className="text-slate-500 text-sm mt-3">
+              We take pride in our service excellence. Here are the pillars that make us the first choice for homes and businesses.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {WHY_CHOOSE_US.map((item, index) => (
+              <div
+                key={index}
+                className="bg-white p-6 md:p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow text-left group"
+              >
+                <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
+                  {getIcon(item.iconName)}
+                </div>
+                <h4 className="text-lg font-bold text-blue-950 mb-2 font-display">{item.title}</h4>
+                <p className="text-slate-500 text-sm leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Cities We Serve */}
+        <div className="border-t border-slate-100 pt-12">
+          <div className="text-center max-w-3xl mx-auto mb-8">
+            <h3 className="text-xl sm:text-2xl font-extrabold text-blue-950 font-display flex items-center justify-center gap-2">
+              <MapPin className="w-5 h-5 text-orange-500" />
+              Cities We Proudly Serve
+            </h3>
+            <p className="text-slate-500 text-sm mt-2">
+              We offer domestic shifting services between and across all major cities in Pakistan.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-2 max-w-4xl mx-auto">
+            {CITIES.map((city, index) => (
+              <div
+                key={index}
+                className="px-4 py-2 bg-white rounded-full border border-slate-200 hover:border-orange-400 hover:text-orange-500 text-slate-700 text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 cursor-default"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                <span>{city}</span>
+              </div>
+            ))}
+            <div className="px-4 py-2 bg-orange-50 text-orange-600 rounded-full border border-orange-200 text-xs font-bold shadow-sm flex items-center gap-1.5">
+              <span>& all major cities of Pakistan!</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}

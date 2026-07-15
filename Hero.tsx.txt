@@ -1,0 +1,215 @@
+import { motion } from 'motion/react';
+import { Phone, ArrowRight, ShieldCheck, Clock, Users, BadgeCheck, Check, Star, MapPin } from 'lucide-react';
+
+interface HeroProps {
+  onGetQuoteClick: () => void;
+}
+
+export default function Hero({ onGetQuoteClick }: HeroProps) {
+  const cities = ['Karachi', 'Lahore', 'Islamabad', 'Rawalpindi', 'Faisalabad', 'Multan', 'Peshawar', 'Gujranwala'];
+
+  return (
+    <section id="home" className="relative min-h-screen pt-28 pb-16 bg-slate-50 overflow-hidden border-b border-slate-200">
+      {/* Decorative clean grid backdrop */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Upper Main Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* Left Column: Hero Text & Support Cards */}
+          <div className="lg:col-span-7 space-y-6 md:space-y-8 text-left">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-block px-3 py-1.5 bg-blue-100 text-blue-700 text-[10px] font-black uppercase tracking-widest rounded-full"
+            >
+              #1 Relocation Experts in Pakistan
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl sm:text-5xl md:text-6xl font-black text-blue-950 leading-[1.05] tracking-tight font-display"
+            >
+              Pakistan's Trusted <br />
+              <span className="text-orange-500">Movers & Packers.</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl font-normal"
+            >
+              Safe, Fast & Affordable House, Office & Commercial Relocation Across Pakistan. Experience the art of premium, stress-free shifting with expert packing supervisors.
+            </motion.p>
+
+            {/* Premium Interactive Callouts */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-col sm:flex-row flex-wrap gap-4 pt-2"
+            >
+              {/* Primary Call to Action Button */}
+              <button
+                onClick={onGetQuoteClick}
+                className="bg-orange-500 hover:bg-orange-600 active:scale-95 text-white px-8 py-4 rounded-full text-sm font-bold shadow-xl shadow-orange-200 transition-all flex items-center justify-center gap-2 cursor-pointer group"
+              >
+                <span>Get Free Quote</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              {/* WhatsApp Support Box */}
+              <a
+                href="https://wa.me/923122800519"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 bg-white border border-slate-200 p-3 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="w-10 h-10 bg-green-500 flex items-center justify-center rounded-full text-white">
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.516.899 3.12 1.371 4.781 1.372 5.123 0 9.29-4.167 9.293-9.29.001-2.482-.965-4.814-2.72-6.57s-4.088-2.722-6.57-2.723c-5.124 0-9.291 4.167-9.293 9.29-.001 2.01.536 3.96 1.554 5.639l-.998 3.645 3.734-.979zm11.367-6.51c-.273-.137-1.62-.8-1.87-.89s-.43-.137-.61.137-.694.89-.85 1.072-.312.205-.585.068-.273-.137-.312-.137c-1.154-.513-1.91-1.284-2.22-1.815-.312-.533-.033-.822.242-1.096.247-.247.546-.638.82-.958.273-.32.364-.548.546-.913.182-.365.091-.685-.046-.958s-.61-1.47-.835-2.022c-.221-.54-.45-.465-.61-.473l-.52-.008c-.182 0-.477.068-.727.342s-.954.933-.954 2.275c0 1.342.977 2.635 1.114 2.818s1.923 2.936 4.659 4.12c2.736 1.184 2.736.789 3.237.743s1.62-.663 1.848-1.303.228-1.187.16-1.303-.251-.205-.524-.342z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider text-left">WhatsApp Now</div>
+                  <div className="text-sm font-bold text-slate-800">+92 312 2800519</div>
+                </div>
+              </a>
+
+              {/* Call Now Box */}
+              <a
+                href="tel:03122800519"
+                className="flex items-center gap-3 bg-blue-900 border border-blue-800 p-3 rounded-2xl shadow-lg hover:bg-blue-950 transition-colors"
+              >
+                <div className="w-10 h-10 bg-white/10 flex items-center justify-center rounded-full text-white">
+                  <Phone className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className="text-[10px] text-blue-300 font-bold uppercase tracking-wider text-left">Call Now</div>
+                  <div className="text-sm font-bold text-white uppercase tracking-tight">0312-2800519</div>
+                </div>
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Dynamic Features Asymmetrical Grid */}
+          <div className="lg:col-span-5 relative w-full">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="grid grid-cols-2 gap-3"
+            >
+              {/* House Shifting Card */}
+              <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-3">
+                  <Users className="w-6 h-6 text-blue-600" />
+                </div>
+                <h4 className="text-xs font-black text-slate-800 uppercase mb-1">House Shifting</h4>
+                <p className="text-[10px] text-slate-500 leading-normal">Professional & secure home relocation.</p>
+              </div>
+
+              {/* Office Relocation Card */}
+              <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mb-3">
+                  <ShieldCheck className="w-6 h-6 text-orange-500" />
+                </div>
+                <h4 className="text-xs font-black text-slate-800 uppercase mb-1">Office Reloc</h4>
+                <p className="text-[10px] text-slate-500 leading-normal">Seamless corporate shifting transitions.</p>
+              </div>
+
+              {/* Embedded Testimonial Box (Spans 2 columns) */}
+              <div className="bg-blue-900 p-6 rounded-3xl shadow-xl flex flex-col items-center text-center col-span-2 text-white border border-blue-800 relative overflow-hidden">
+                <div className="absolute -top-6 -right-6 w-20 h-20 bg-white/5 rounded-full"></div>
+                
+                <div className="flex items-center gap-2 mb-2 justify-center">
+                  <div className="flex text-amber-400">
+                    <Star className="w-4 h-4 fill-current" />
+                    <Star className="w-4 h-4 fill-current" />
+                    <Star className="w-4 h-4 fill-current" />
+                    <Star className="w-4 h-4 fill-current" />
+                    <Star className="w-4 h-4 fill-current" />
+                  </div>
+                  <div className="text-orange-400 font-bold text-xs underline">5.0 Star Rating</div>
+                </div>
+
+                <p className="text-xs text-slate-200 italic leading-relaxed px-4">
+                  "ZOHAN team moved our entire Karachi corporate office in just 6 hours. Expert wrapping and zero scratches!"
+                </p>
+                <div className="text-[9px] text-white/50 uppercase mt-2.5 tracking-widest font-bold">
+                  - Faisal Ahmed, TechLogix
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+        </div>
+
+        {/* Bottom Section: Trust Bar & Service Cities */}
+        <div className="mt-16 border-t border-slate-200 pt-10 grid grid-cols-1 md:grid-cols-4 gap-8 text-left">
+          
+          {/* Col 1: Why Choose Us */}
+          <div className="col-span-1">
+            <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-4">Why Choose Us</h3>
+            <ul className="space-y-3">
+              <li className="flex items-center gap-2 text-[11px] text-slate-600 font-medium">
+                <div className="p-0.5 bg-emerald-100 rounded-full text-emerald-600">
+                  <Check className="w-3 h-3 text-emerald-600 stroke-[3]" />
+                </div>
+                On-Time Delivery Guarantee
+              </li>
+              <li className="flex items-center gap-2 text-[11px] text-slate-600 font-medium">
+                <div className="p-0.5 bg-emerald-100 rounded-full text-emerald-600">
+                  <Check className="w-3 h-3 text-emerald-600 stroke-[3]" />
+                </div>
+                Secure Furniture Wrapping
+              </li>
+              <li className="flex items-center gap-2 text-[11px] text-slate-600 font-medium">
+                <div className="p-0.5 bg-emerald-100 rounded-full text-emerald-600">
+                  <Check className="w-3 h-3 text-emerald-600 stroke-[3]" />
+                </div>
+                100% Damage-free transit
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 2-3: Cities We Serve */}
+          <div className="col-span-1 md:col-span-2">
+            <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-4">Cities We Serve</h3>
+            <div className="flex flex-wrap gap-1.5">
+              {cities.map((city) => (
+                <span
+                  key={city}
+                  className="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[10px] font-bold text-slate-700 shadow-2xs hover:border-orange-400 transition-colors"
+                >
+                  {city}
+                </span>
+              ))}
+              <span className="px-2.5 py-1 bg-orange-50 border border-orange-100 rounded-lg text-[10px] font-black text-orange-600">
+                & across Pakistan
+              </span>
+            </div>
+          </div>
+
+          {/* Col 4: Head Office Card */}
+          <div className="col-span-1 bg-slate-100 border border-slate-200/50 rounded-2xl p-4 flex flex-col justify-between">
+            <div>
+              <h3 className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1.5">Head Office</h3>
+              <p className="text-[11px] font-bold text-slate-800 leading-snug">
+                Jinnah Highway, Karachi,<br />Pakistan
+              </p>
+            </div>
+            <p className="text-[10px] text-blue-600 mt-2 font-black">zohanmovers@gmail.com</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  );
+}
